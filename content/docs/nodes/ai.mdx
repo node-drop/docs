@@ -1,0 +1,104 @@
+---
+title: AI Nodes
+description: Nodes for AI and machine learning integrations
+---
+
+# AI Nodes
+
+These nodes integrate AI capabilities into your workflows.
+
+## OpenAI
+
+Integrates with OpenAI's API for GPT models, embeddings, and more.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Operation | select | Chat, Complete, Embed, etc. |
+| Model | select | gpt-4, gpt-3.5-turbo, etc. |
+| Prompt/Messages | string/array | Input for the model |
+| Temperature | number | Creativity (0-2) |
+| Max Tokens | number | Response length limit |
+
+**Requires:** OpenAI API credentials
+
+**Chat Example:**
+```
+Operation: Chat
+Model: gpt-4
+Messages:
+  - Role: system
+    Content: You are a helpful assistant.
+  - Role: user
+    Content: {{ $json.question }}
+```
+
+
+**Output:**
+```json
+{
+  "response": "AI generated response...",
+  "usage": {
+    "prompt_tokens": 50,
+    "completion_tokens": 100,
+    "total_tokens": 150
+  }
+}
+```
+
+## Anthropic
+
+Integrates with Anthropic's Claude models.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Model | select | claude-3-opus, claude-3-sonnet, etc. |
+| Prompt | string | Input prompt |
+| System | string | System instructions |
+| Max Tokens | number | Response length limit |
+
+**Requires:** Anthropic API credentials
+
+## Chat
+
+AI chat node with conversation memory.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Provider | select | OpenAI, Anthropic |
+| Model | select | Model to use |
+| System Prompt | string | AI personality/instructions |
+| Memory | select | None, Window, Summary |
+| Memory Size | number | Messages to remember |
+
+**Use Cases:**
+- Customer support bots
+- Interactive assistants
+- Multi-turn conversations
+
+**Memory Modes:**
+- **None** - No conversation history
+- **Window** - Keep last N messages
+- **Summary** - Summarize older messages
+
+## AI Best Practices
+
+### Prompt Engineering
+- Be specific and clear
+- Provide examples when helpful
+- Use system prompts for consistent behavior
+
+### Cost Management
+- Use appropriate models (gpt-3.5 vs gpt-4)
+- Set reasonable max_tokens
+- Cache responses when possible
+
+### Error Handling
+- Handle rate limits with retries
+- Validate AI responses
+- Have fallback behavior

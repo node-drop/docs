@@ -1,0 +1,81 @@
+---
+title: Your First Workflow
+description: Create your first automation in NodeDrop
+---
+
+# Your First Workflow
+
+Let's create a simple workflow that demonstrates the core concepts of NodeDrop.
+
+## What We'll Build
+
+A workflow that:
+1. Triggers manually
+2. Makes an HTTP request to fetch data
+3. Transforms the response
+4. Outputs the result
+
+## Step 1: Create a New Workflow
+
+1. Log in to NodeDrop
+2. Click **New Workflow** in the sidebar
+3. Give your workflow a name like "My First Workflow"
+
+## Step 2: Add a Manual Trigger
+
+Every workflow needs a trigger - the event that starts the automation.
+
+1. Click the **+** button on the canvas
+2. Search for "Manual Trigger"
+3. Click to add it to your workflow
+
+The Manual Trigger lets you run the workflow on demand by clicking the "Execute" button.
+
+## Step 3: Add an HTTP Request Node
+
+Now let's fetch some data from an API.
+
+1. Click the **+** button that appears after the trigger
+2. Search for "HTTP Request"
+3. Configure the node:
+   - **Method**: GET
+   - **URL**: `https://jsonplaceholder.typicode.com/posts/1`
+
+This will fetch a sample post from a test API.
+
+## Step 4: Add a Set Node
+
+Let's transform the data to extract just what we need.
+
+1. Add a **Set** node after the HTTP Request
+2. Configure it to set a new field:
+   - **Field Name**: `summary`
+   - **Value**: Use the expression picker to select `{{ $json.title }}`
+
+## Step 5: Execute the Workflow
+
+1. Click the **Execute Workflow** button in the toolbar
+2. Watch as each node executes in sequence
+3. Click on any node to see its output data
+
+## Understanding the Results
+
+After execution, you'll see:
+- Green checkmarks on successfully executed nodes
+- The output data panel showing what each node produced
+- Execution history in the sidebar
+
+## Next Steps
+
+Now that you've created your first workflow, try:
+
+- Adding an **If/Else** node to add conditional logic
+- Using a **Schedule Trigger** to run automatically
+- Creating a **Webhook Trigger** to accept external requests
+
+## Tips
+
+- **Save often** - Use Ctrl/Cmd + S to save your workflow
+- **Test incrementally** - Execute after adding each node to verify it works
+- **Check the output** - Click nodes to inspect their data
+- **Use expressions** - Reference data from previous nodes with `{{ $json.fieldName }}`

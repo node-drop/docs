@@ -1,0 +1,179 @@
+---
+title: Triggers
+description: Start workflows with different trigger types
+---
+
+# Triggers
+
+Triggers determine when and how your workflow starts executing. Every workflow needs at least one trigger.
+
+## Manual Trigger
+
+The simplest trigger - runs when you click the Execute button.
+
+**Use cases:**
+- Testing and development
+- On-demand tasks
+- Workflows you run occasionally
+
+**Configuration:** None required
+
+## Schedule Trigger
+
+Runs workflows on a schedule using cron expressions.
+
+**Use cases:**
+- Daily reports
+- Periodic data syncs
+- Scheduled cleanups
+
+**Configuration:**
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| Cron Expression | When to run | `0 9 * * *` (9 AM daily) |
+| Timezone | Timezone for schedule | `America/New_York` |
+
+### Common Cron Patterns
+
+```
+* * * * *     Every minute
+0 * * * *     Every hour
+0 9 * * *     Daily at 9 AM
+0 9 * * 1     Every Monday at 9 AM
+0 0 1 * *     First day of month
+```
+
+## Webhook Trigger
+
+Creates an HTTP endpoint that triggers the workflow when called.
+
+**Use cases:**
+- Receiving data from external services
+- API integrations
+- Real-time event handling
+
+**Configuration:**
+
+| Field | Description |
+|-------|-------------|
+| HTTP Method | GET, POST, PUT, DELETE |
+| Path | Custom URL path (optional) |
+| Authentication | None, Basic Auth, Header Auth |
+| Response Mode | Immediate or wait for workflow |
+
+### Webhook URL
+
+After saving, you'll get a unique webhook URL:
+```
+https://your-instance.com/webhook/abc123
+```
+
+### Receiving Data
+
+Data sent to the webhook is available in the node output:
+- `$json.body` - Request body
+- `$json.headers` - Request headers
+- `$json.query` - Query parameters
+
+### Example: Receiving JSON
+
+```bash
+curl -X POST https://your-instance.com/webhook/abc123 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John", "email": "john@example.com"}'
+```
+
+Access in workflow:
+```
+{{ $json.body.name }}  // "John"
+{{ $json.body.email }} // "john@example.com"
+```
+
+## Workflow Trigger
+
+Allows one workflow to call another, enabling modular workflow design.
+
+**Use cases:**
+- Reusable sub-workflows
+- Breaking complex workflows into parts
+- Shared logic across workflows
+
+**Configuration:**
+
+| Field | Description |
+|-------|-------------|
+| Workflow | Select the workflow to call |
+| Input Data | Data to pass to the sub-workflow |
+
+### Calling a Sub-Workflow
+
+Use the **Execute Workflow** node to call a workflow with a Workflow Trigger.
+
+## Error Trigger
+
+Runs when another workflow fails, enabling error handling and notifications.
+
+**Use cases:**
+- Error notifications (Slack, email)
+- Retry logic
+- Error logging
+
+**Configuration:**
+
+| Field | Description |
+|-------|-------------|
+| Workflow | Which workflow's errors to catch |
+| Error Types | All errors or specific types |
+
+### Error Data
+
+The trigger provides error details:
+- `$json.error.message` - Error message
+- `$json.error.workflow` - Failed workflow name
+- `$json.error.node` - Node that failed
+- `$json.error.timestamp` - When it failed
+
+## Google Sheets Trigger
+
+Runs when a Google Sheet is modified.
+
+**Use cases:**
+- Form submissions
+- Spreadsheet-based workflows
+- Data entry automation
+
+**Configuration:**
+
+| Field | Description |
+|-------|-------------|
+| Spreadsheet | Google Sheet to monitor |
+| Sheet | Specific sheet/tab |
+| Trigger On | Row added, updated, or deleted |
+
+**Requires:** Google OAuth credentials
+
+## Best Practices
+
+### Choosing the Right Trigger
+
+| Scenario | Recommended Trigger |
+|----------|-------------------|
+| Testing | Manual |
+| Periodic tasks | Schedule |
+| External integrations | Webhook |
+| Modular workflows | Workflow |
+| Error handling | Error |
+
+### Webhook Security
+
+- Use authentication when possible
+- Validate incoming data
+- Consider rate limiting for public webhooks
+- Use HTTPS in production
+
+### Schedule Considerations
+
+- Account for timezone differences
+- Avoid scheduling too frequently
+- Consider execution time when setting intervals

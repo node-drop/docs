@@ -1,0 +1,117 @@
+---
+title: Configuration
+description: Configure NodeDrop for your environment
+---
+
+# Configuration
+
+NodeDrop is configured through environment variables. This guide covers all available options.
+
+## Environment Variables
+
+### Core Settings
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NODE_ENV` | Environment mode | `development` |
+| `PORT` | Application port | `5678` |
+| `JWT_SECRET` | Secret for JWT tokens | Required |
+
+### Database
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DATABASE_URL` | PostgreSQL connection string | Required |
+| `POSTGRES_USER` | Database username | `nodedrop` |
+| `POSTGRES_PASSWORD` | Database password | Required |
+| `POSTGRES_DB` | Database name | `nodedrop` |
+
+### Redis
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `REDIS_URL` | Redis connection string | Required |
+| `REDIS_PASSWORD` | Redis password | - |
+
+### Edition
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NODEDROP_EDITION` | `community` or `cloud` | `community` |
+
+
+## Example .env File
+
+```bash
+# Environment
+NODE_ENV=production
+PORT=5678
+
+# Security
+JWT_SECRET=your-secure-random-string-here
+
+# Database
+POSTGRES_USER=nodedrop
+POSTGRES_PASSWORD=secure-password-here
+POSTGRES_DB=nodedrop
+DATABASE_URL=postgresql://nodedrop:secure-password-here@postgres:5432/nodedrop
+
+# Redis
+REDIS_PASSWORD=redis-password-here
+REDIS_URL=redis://:redis-password-here@redis:6379
+
+# Edition (optional)
+NODEDROP_EDITION=community
+```
+
+## Generating Secrets
+
+Generate secure random strings for secrets:
+
+```bash
+# Using OpenSSL
+openssl rand -base64 32
+
+# Using Node.js
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+## Configuration Priority
+
+1. Environment variables (highest)
+2. `.env` file
+3. Default values (lowest)
+
+## Validating Configuration
+
+NodeDrop validates configuration on startup. Missing required variables will prevent startup with clear error messages.
+
+## Development vs Production
+
+### Development
+```bash
+NODE_ENV=development
+# Enables detailed logging
+# Disables some security features
+# Hot reloading enabled
+```
+
+### Production
+```bash
+NODE_ENV=production
+# Optimized performance
+# Full security features
+# Minimal logging
+```
+
+## Database Configuration
+
+### Connection String Format
+```
+postgresql://USER:PASSWORD@HOST:PORT/DATABASE
+```
+
+### Connection Pool
+NodeDrop manages database connections automatically. For high-traffic deployments, consider:
+- Increasing pool size
+- Using connection poolers like PgBouncer

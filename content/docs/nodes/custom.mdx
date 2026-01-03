@@ -1,0 +1,129 @@
+---
+title: Custom Nodes
+description: Create and install custom nodes
+---
+
+# Custom Nodes
+
+Extend NodeDrop with custom nodes for integrations not covered by built-in nodes.
+
+## Installing Custom Nodes
+
+1. Go to **Settings > Custom Nodes**
+2. Click **Upload Node**
+3. Select a node package (.zip file)
+4. The node appears in the node panel
+
+## Creating Custom Nodes
+
+### Node Structure
+
+```
+MyNode/
+├── index.ts          # Exports the node
+└── MyNode.node.ts    # Node implementation
+```
+
+### Basic Template
+
+```typescript
+// MyNode.node.ts
+import { NodeDefinition } from "../../types/node.types";
+
+export const MyNodeNode: NodeDefinition = {
+  type: "MY_NODE",
+  displayName: "My Node",
+  name: "myNode",
+  group: ["transform"],
+  version: 1,
+  description: "What this node does",
+  icon: "fa:gear",
+  color: "#2196F3",
+  defaults: {},
+  inputs: ["main"],
+  outputs: ["main"],
+  properties: [
+    {
+      displayName: "Option",
+      name: "option",
+      type: "string",
+      required: false,
+      default: "",
+      description: "Configuration option",
+    },
+  ],
+  execute: async (inputData, properties) => {
+    // Your logic here
+    return {
+      success: true,
+      data: inputData,
+    };
+  },
+};
+```
+
+
+### Index File
+
+```typescript
+// index.ts
+export { MyNodeNode } from "./MyNode.node";
+```
+
+## Node Definition Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| type | string | Unique identifier |
+| displayName | string | Name shown in UI |
+| name | string | Internal name (camelCase) |
+| group | string[] | Categories |
+| version | number | Node version |
+| description | string | Description in UI |
+| icon | string | Icon (e.g., "fa:gear") |
+| color | string | Hex color |
+| inputs | string[] | Input types |
+| outputs | string[] | Output types |
+| properties | array | Configuration options |
+| execute | function | Execution logic |
+
+## Property Types
+
+| Type | Description |
+|------|-------------|
+| string | Text input |
+| number | Numeric input |
+| boolean | Checkbox |
+| options | Dropdown select |
+| json | JSON editor |
+| code | Code editor |
+
+## Execute Function
+
+```typescript
+execute: async (inputData, properties) => {
+  // inputData - data from previous node
+  // properties - configured values
+  
+  const result = doSomething(inputData, properties.option);
+  
+  return {
+    success: true,
+    data: result,
+  };
+}
+```
+
+## Packaging
+
+1. Build your node
+2. Create a zip with the node folder
+3. Upload via Custom Nodes settings
+
+## Best Practices
+
+- Use clear, descriptive names
+- Include helpful descriptions
+- Handle errors gracefully
+- Test thoroughly before deploying
+- Version your nodes for updates

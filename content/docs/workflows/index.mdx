@@ -1,0 +1,108 @@
+---
+title: Working with Workflows
+description: Create, manage, and execute workflows
+---
+
+# Working with Workflows
+
+Workflows are the heart of NodeDrop. This guide covers everything you need to know about creating and managing them.
+
+## Creating Workflows
+
+### From the Dashboard
+
+1. Click **New Workflow** in the sidebar
+2. Enter a name for your workflow
+3. Start adding nodes to the canvas
+
+### From Templates
+
+NodeDrop includes workflow templates for common use cases:
+
+1. Go to **Templates** in the sidebar
+2. Browse or search for a template
+3. Click **Use Template** to create a copy
+
+## The Workflow Editor
+
+The editor consists of:
+
+- **Canvas** - Visual workspace where you build workflows
+- **Node Panel** - Add nodes by clicking + or dragging from the panel
+- **Properties Panel** - Configure the selected node
+- **Toolbar** - Save, execute, and manage the workflow
+
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| Ctrl/Cmd + S | Save workflow |
+| Ctrl/Cmd + Z | Undo |
+| Ctrl/Cmd + Shift + Z | Redo |
+| Delete | Remove selected node |
+| Ctrl/Cmd + C | Copy selected nodes |
+| Ctrl/Cmd + V | Paste nodes |
+
+## Adding Nodes
+
+### Click to Add
+1. Click the **+** button on a node output
+2. Search for the node you want
+3. Click to add and connect it
+
+### Drag and Drop
+1. Open the node panel
+2. Drag a node onto the canvas
+3. Connect it to other nodes
+
+
+## Connecting Nodes
+
+- Click and drag from an output port to an input port
+- Connections show the data flow direction
+- Delete connections by selecting and pressing Delete
+
+## Configuring Nodes
+
+1. Click a node to select it
+2. The properties panel shows configuration options
+3. Required fields are marked with an asterisk
+4. Use expressions to reference data from other nodes
+
+## Saving Workflows
+
+Workflows are saved automatically when you:
+- Press Ctrl/Cmd + S
+- Click the Save button
+- Execute the workflow
+
+## Workflow States
+
+| State | Description |
+|-------|-------------|
+| Draft | Not yet saved or activated |
+| Active | Ready to be triggered |
+| Inactive | Saved but won't respond to triggers |
+
+## Organizing Workflows
+
+### Naming Conventions
+Use descriptive names that indicate what the workflow does:
+- Good: "Sync Shopify Orders to Airtable"
+- Bad: "Workflow 1"
+
+### Tags and Categories
+Organize workflows with tags for easy filtering and searching.
+
+## Importing and Exporting
+
+### Export
+1. Open the workflow
+2. Click the menu button
+3. Select **Export**
+4. Save the JSON file
+
+### Import
+1. Click **Import Workflow** in the sidebar
+2. Select a JSON file
+3. The workflow is created as a copy

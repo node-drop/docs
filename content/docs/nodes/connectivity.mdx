@@ -1,0 +1,113 @@
+---
+title: Connectivity Nodes
+description: Nodes that connect to external services
+---
+
+# Connectivity Nodes
+
+These nodes connect your workflows to external services and APIs.
+
+## HTTP Request
+
+Makes HTTP requests to any URL or API.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Method | select | GET, POST, PUT, DELETE, PATCH |
+| URL | string | Request URL |
+| Authentication | select | None, Basic, Bearer, etc. |
+| Headers | array | Custom headers |
+| Body | json/form | Request body |
+| Query Parameters | array | URL query params |
+
+**Authentication Options:**
+- **None** - No authentication
+- **Basic Auth** - Username/password
+- **Bearer Token** - Authorization header
+- **Header Auth** - Custom header
+- **OAuth2** - OAuth credentials
+
+**Example - GET Request:**
+```
+Method: GET
+URL: https://api.example.com/users
+Headers: 
+  - Accept: application/json
+```
+
+
+**Example - POST Request:**
+```
+Method: POST
+URL: https://api.example.com/users
+Headers:
+  - Content-Type: application/json
+Body:
+  {
+    "name": "{{ $json.name }}",
+    "email": "{{ $json.email }}"
+  }
+```
+
+**Output:**
+```json
+{
+  "statusCode": 200,
+  "headers": { },
+  "body": { }
+}
+```
+
+**Error Handling:**
+- Enable "Continue on Fail" to handle errors gracefully
+- Check `$json.statusCode` for response status
+- Use If/Else to handle different status codes
+
+## Gmail
+
+Sends emails via Gmail API.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| To | string | Recipient email(s) |
+| Subject | string | Email subject |
+| Body | string | Email content |
+| Body Type | select | Text or HTML |
+| Attachments | array | File attachments |
+
+**Requires:** Google OAuth credentials with Gmail scope
+
+**Example:**
+```
+To: {{ $json.email }}
+Subject: Order Confirmation #{{ $json.orderId }}
+Body: 
+  Hi {{ $json.name }},
+  
+  Your order has been confirmed.
+  
+  Thanks!
+```
+
+## Tips for API Integration
+
+### Rate Limiting
+Use the Loop node with delays for rate-limited APIs.
+
+### Pagination
+Use a Loop to fetch paginated results:
+1. Make initial request
+2. Check for next page
+3. Loop until no more pages
+
+### Error Handling
+```
+1. HTTP Request (Continue on Fail: true)
+2. If/Else ({{ $json.statusCode === 200 }})
+   - True: Continue processing
+   - False: Handle error
+```

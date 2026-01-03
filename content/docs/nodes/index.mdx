@@ -1,0 +1,113 @@
+---
+title: Nodes Reference
+description: Complete reference for all NodeDrop nodes
+---
+
+# Nodes Reference
+
+NodeDrop includes 25+ built-in nodes organized by category. This reference covers all available nodes and their configuration options.
+
+## Trigger Nodes
+
+Nodes that start workflow execution.
+
+| Node | Description |
+|------|-------------|
+| [Manual Trigger](/docs/nodes/triggers#manual-trigger) | Start workflow manually |
+| [Schedule Trigger](/docs/nodes/triggers#schedule-trigger) | Start on a cron schedule |
+| [Webhook Trigger](/docs/nodes/triggers#webhook-trigger) | Start via HTTP request |
+| [Workflow Trigger](/docs/nodes/triggers#workflow-trigger) | Start from another workflow |
+| [Error Trigger](/docs/nodes/triggers#error-trigger) | Start when a workflow fails |
+| [Google Sheets Trigger](/docs/nodes/triggers#google-sheets-trigger) | Start when sheet changes |
+
+## Logic & Flow Control
+
+Nodes that control workflow execution flow.
+
+| Node | Description |
+|------|-------------|
+| [If/Else](/docs/nodes/logic#if-else) | Route based on conditions |
+| [Switch](/docs/nodes/logic#switch) | Route to multiple outputs |
+| [Loop](/docs/nodes/logic#loop) | Iterate over items |
+| [Split](/docs/nodes/logic#split) | Split array into items |
+| [Merge](/docs/nodes/logic#merge) | Combine multiple inputs |
+| [Wait](/docs/nodes/logic#wait) | Pause execution |
+| [Aggregate](/docs/nodes/logic#aggregate) | Combine items into one |
+
+## Data Transformation
+
+Nodes that transform and manipulate data.
+
+| Node | Description |
+|------|-------------|
+| [Set](/docs/nodes/transform#set) | Add or update fields |
+| [JSON](/docs/nodes/transform#json) | Compose JSON objects |
+| [Code](/docs/nodes/transform#code) | Execute custom code |
+| [Formatter](/docs/nodes/transform#formatter) | Format text, dates, numbers |
+
+## Connectivity
+
+Nodes that connect to external services.
+
+| Node | Description |
+|------|-------------|
+| [HTTP Request](/docs/nodes/connectivity#http-request) | Make HTTP/API calls |
+| [Gmail](/docs/nodes/connectivity#gmail) | Send emails via Gmail |
+
+## AI Nodes
+
+Nodes for AI and machine learning integrations.
+
+| Node | Description |
+|------|-------------|
+| [OpenAI](/docs/nodes/ai#openai) | OpenAI API integration |
+| [Anthropic](/docs/nodes/ai#anthropic) | Claude AI integration |
+| [Chat](/docs/nodes/ai#chat) | AI chat with memory |
+
+## Utility Nodes
+
+Helper nodes for debugging and organization.
+
+| Node | Description |
+|------|-------------|
+| [Data Preview](/docs/nodes/utility#data-preview) | Preview data in workflow |
+| [Image Preview](/docs/nodes/utility#image-preview) | Preview images |
+
+## Node Anatomy
+
+Every node has:
+
+### Inputs & Outputs
+- **Input ports** - Receive data from previous nodes
+- **Output ports** - Send data to next nodes
+- Some nodes have multiple outputs (If/Else, Switch)
+
+### Properties
+Configuration options specific to each node type.
+
+### Execution
+The logic that runs when the node executes.
+
+## Common Properties
+
+Many nodes share these properties:
+
+| Property | Description |
+|----------|-------------|
+| Continue on Fail | Don't stop workflow if node fails |
+| Retry on Fail | Retry failed execution |
+| Notes | Add documentation to the node |
+
+## Custom Nodes
+
+NodeDrop supports custom nodes for integrations not covered by built-in nodes.
+
+### Installing Custom Nodes
+
+1. Go to **Settings > Custom Nodes**
+2. Upload a node package (.zip)
+3. The node appears in the node panel
+
+### Creating Custom Nodes
+
+See the [Custom Nodes Guide](/docs/nodes/custom) for development instructions.

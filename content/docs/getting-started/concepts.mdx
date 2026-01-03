@@ -1,0 +1,97 @@
+---
+title: Core Concepts
+description: Understanding NodeDrop's key concepts
+---
+
+# Core Concepts
+
+Understanding these concepts will help you build effective workflows in NodeDrop.
+
+## Workflows
+
+A **workflow** is a collection of connected nodes that automate a process. Workflows:
+- Start with a trigger node
+- Process data through action nodes
+- Can branch, loop, and merge data flows
+
+## Nodes
+
+**Nodes** are the building blocks of workflows. Each node performs a specific action:
+
+### Trigger Nodes
+Start workflow execution. Every workflow needs at least one trigger.
+
+| Node | Description |
+|------|-------------|
+| Manual Trigger | Run on demand |
+| Schedule Trigger | Run on a cron schedule |
+| Webhook Trigger | Run when HTTP request received |
+| Workflow Trigger | Run from another workflow |
+| Error Trigger | Run when another workflow fails |
+
+### Action Nodes
+Process and transform data.
+
+| Category | Examples |
+|----------|----------|
+| HTTP | HTTP Request |
+| Transform | Set, JSON, Code |
+| Logic | If/Else, Switch, Loop, Split, Merge |
+| AI | OpenAI, Anthropic, Chat |
+| Utility | Wait, Data Preview |
+
+## Connections
+
+**Connections** link nodes together, defining the flow of data. Data flows from output ports to input ports.
+
+- Most nodes have one input and one output
+- Logic nodes (If/Else, Switch) have multiple outputs
+- Merge nodes have multiple inputs
+
+## Data Flow
+
+Data in NodeDrop flows as **items** - JSON objects that pass between nodes.
+
+```json
+{
+  "json": {
+    "name": "John",
+    "email": "john@example.com"
+  }
+}
+```
+
+Each node receives items from the previous node, processes them, and outputs new items.
+
+## Expressions
+
+**Expressions** let you reference data from previous nodes using the `{{ }}` syntax:
+
+```
+{{ $json.fieldName }}           // Current item's field
+{{ $node["NodeName"].json.field }}  // Specific node's output
+{{ $input.first().json.field }}     // First input item
+```
+
+## Credentials
+
+**Credentials** securely store authentication data like API keys and OAuth tokens. They're:
+- Encrypted at rest
+- Reusable across workflows
+- Managed separately from workflow definitions
+
+## Executions
+
+An **execution** is a single run of a workflow. NodeDrop tracks:
+- Execution status (success, error, running)
+- Data at each node
+- Timing information
+- Error messages
+
+## Environments
+
+**Environments** let you use different configurations (like API endpoints) for development vs production without changing your workflow.
+
+## Workspaces (Cloud Edition)
+
+**Workspaces** organize workflows, credentials, and team members. Available in the Cloud edition for team collaboration.

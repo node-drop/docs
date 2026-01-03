@@ -1,0 +1,136 @@
+---
+title: Security
+description: Security best practices for NodeDrop
+---
+
+# Security
+
+Secure your NodeDrop installation with these best practices.
+
+## Authentication
+
+### JWT Secret
+
+Always use a strong, random JWT secret:
+
+```bash
+# Generate a secure secret
+openssl rand -base64 64
+```
+
+Never use default or weak secrets in production.
+
+### Password Requirements
+
+NodeDrop enforces:
+- Minimum 8 characters
+- Mix of letters and numbers recommended
+
+## Network Security
+
+### HTTPS
+
+Always use HTTPS in production:
+
+1. Use a reverse proxy (nginx, Traefik, Caddy)
+2. Obtain SSL certificates (Let's Encrypt)
+3. Redirect HTTP to HTTPS
+
+### Firewall
+
+Only expose necessary ports:
+- **5678** - NodeDrop application
+- Block direct database/Redis access from internet
+
+### Reverse Proxy Example (nginx)
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name nodedrop.example.com;
+    
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+    
+    location / {
+        proxy_pass http://localhost:5678;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+    }
+}
+```
+
+
+## Database Security
+
+### Credentials
+
+- Use strong, unique passwords
+- Don't use default credentials
+- Rotate passwords periodically
+
+### Access Control
+
+- Limit database access to NodeDrop only
+- Use separate database users per environment
+- Enable SSL for database connections
+
+### Backups
+
+- Regular automated backups
+- Test restore procedures
+- Encrypt backup files
+
+## Credential Encryption
+
+NodeDrop encrypts stored credentials:
+- AES-256 encryption
+- Encryption key derived from JWT_SECRET
+- Credentials decrypted only during execution
+
+## Webhook Security
+
+### Authentication
+
+Enable authentication on webhooks:
+- Basic Auth
+- Header-based tokens
+- HMAC signatures
+
+### Validation
+
+- Validate incoming data
+- Check content types
+- Implement rate limiting
+
+## Rate Limiting
+
+NodeDrop includes rate limiting for:
+- Authentication endpoints
+- API requests
+- Webhook endpoints
+
+Configure limits based on your needs.
+
+## Audit Logging
+
+Track security-relevant events:
+- Login attempts
+- Credential access
+- Workflow executions
+
+Available in Cloud edition with enhanced audit logs.
+
+## Security Checklist
+
+- [ ] Strong JWT_SECRET configured
+- [ ] HTTPS enabled
+- [ ] Database not exposed to internet
+- [ ] Strong database passwords
+- [ ] Regular backups configured
+- [ ] Webhook authentication enabled
+- [ ] Rate limiting configured
+- [ ] Firewall rules in place
+- [ ] Regular security updates applied

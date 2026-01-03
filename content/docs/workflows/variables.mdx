@@ -1,0 +1,181 @@
+---
+title: Variables & Expressions
+description: Use dynamic data in your workflows
+---
+
+# Variables & Expressions
+
+Variables and expressions let you use dynamic data throughout your workflows.
+
+## Expressions Syntax
+
+Use double curly braces to insert expressions:
+
+```
+{{ expression }}
+```
+
+## Accessing Data
+
+### Current Node Input
+
+Access data from the previous node:
+
+```
+{{ $json.fieldName }}
+{{ $json.nested.field }}
+{{ $json.array[0] }}
+```
+
+### Specific Node Output
+
+Reference output from any previous node:
+
+```
+{{ $node["NodeName"].json.fieldName }}
+```
+
+### Input Items
+
+Access input items directly:
+
+```
+{{ $input.first().json.field }}  // First item
+{{ $input.last().json.field }}   // Last item
+{{ $input.all() }}               // All items
+{{ $input.item }}                // Current item (in loops)
+```
+
+## Built-in Variables
+
+| Variable | Description |
+|----------|-------------|
+| `$json` | Current item's JSON data |
+| `$node` | Access other nodes' output |
+| `$input` | Input items collection |
+| `$workflow` | Workflow metadata |
+| `$execution` | Current execution info |
+| `$now` | Current timestamp |
+| `$today` | Today's date |
+
+## JavaScript in Expressions
+
+Expressions support JavaScript:
+
+```
+{{ $json.price * 1.1 }}                    // Math
+{{ $json.name.toUpperCase() }}             // String methods
+{{ $json.items.length }}                   // Array length
+{{ $json.active ? "Yes" : "No" }}          // Ternary
+{{ new Date($json.timestamp).toISOString() }} // Date formatting
+```
+
+## Common Patterns
+
+### String Concatenation
+
+```
+{{ $json.firstName + " " + $json.lastName }}
+```
+
+### Default Values
+
+```
+{{ $json.value || "default" }}
+{{ $json.count ?? 0 }}
+```
+
+### Conditional Values
+
+```
+{{ $json.status === "active" ? "✅" : "❌" }}
+```
+
+### Array Operations
+
+```
+{{ $json.items.map(i => i.name).join(", ") }}
+{{ $json.numbers.reduce((a, b) => a + b, 0) }}
+{{ $json.items.filter(i => i.active) }}
+```
+
+### Date Formatting
+
+```
+{{ new Date().toISOString() }}
+{{ new Date($json.date).toLocaleDateString() }}
+```
+
+## Workflow Variables
+
+Define reusable variables at the workflow level:
+
+1. Open workflow settings
+2. Go to **Variables** tab
+3. Add key-value pairs
+
+Access in expressions:
+```
+{{ $vars.apiEndpoint }}
+{{ $vars.maxRetries }}
+```
+
+## Environment Variables
+
+Use different values for different environments (dev, staging, prod):
+
+1. Go to **Environments** in settings
+2. Create environments with variables
+3. Switch environments when executing
+
+Access in expressions:
+```
+{{ $env.API_URL }}
+{{ $env.DEBUG_MODE }}
+```
+
+## Expression Editor
+
+The expression editor helps you build expressions:
+
+1. Click the **fx** button on any field
+2. Browse available variables
+3. Use autocomplete for field names
+4. Preview the result
+
+### Tips
+
+- Start typing `$` to see available variables
+- Use `.` to drill into nested objects
+- Click on nodes to see their output structure
+
+## Troubleshooting
+
+### Expression Not Evaluating
+
+- Check for typos in field names
+- Verify the source node executed
+- Ensure proper bracket matching
+
+### Undefined Values
+
+```
+// Handle missing data
+{{ $json.field || "fallback" }}
+
+// Check if exists
+{{ $json.field ? $json.field : "not set" }}
+```
+
+### Type Errors
+
+```
+// Convert to string
+{{ String($json.number) }}
+
+// Convert to number
+{{ Number($json.string) }}
+
+// Parse JSON string
+{{ JSON.parse($json.jsonString) }}
+```

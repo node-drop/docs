@@ -1,0 +1,139 @@
+---
+title: Execution
+description: Running and monitoring workflow executions
+---
+
+# Workflow Execution
+
+Understanding how workflows execute helps you build reliable automations and debug issues.
+
+## Running Workflows
+
+### Manual Execution
+
+1. Open the workflow in the editor
+2. Click **Execute Workflow** in the toolbar
+3. Watch the execution progress in real-time
+
+### Triggered Execution
+
+Workflows run automatically when their trigger fires:
+- Schedule triggers run at the configured time
+- Webhook triggers run when the endpoint is called
+- Error triggers run when a monitored workflow fails
+
+## Execution Flow
+
+1. **Trigger fires** - The workflow starts
+2. **Nodes execute** - Each node runs in sequence
+3. **Data flows** - Output from one node becomes input for the next
+4. **Branching** - Logic nodes route data to different paths
+5. **Completion** - Workflow finishes (success or error)
+
+## Real-Time Monitoring
+
+During execution, the editor shows:
+- **Green highlight** - Currently executing node
+- **Checkmark** - Successfully completed node
+- **Red X** - Failed node
+- **Data count** - Number of items processed
+
+## Execution History
+
+View past executions in the **Executions** page:
+
+| Column | Description |
+|--------|-------------|
+| Status | Success, Error, Running |
+| Started | When execution began |
+| Duration | How long it took |
+| Trigger | What started it |
+
+### Viewing Execution Details
+
+Click an execution to see:
+- Data at each node
+- Error messages (if any)
+- Timing breakdown
+- Full execution path
+
+## Execution States
+
+| State | Description |
+|-------|-------------|
+| Running | Currently executing |
+| Success | Completed without errors |
+| Error | Failed at some point |
+| Waiting | Paused (e.g., Wait node) |
+| Cancelled | Manually stopped |
+
+## Error Handling
+
+### When Nodes Fail
+
+By default, a node failure stops the workflow. You can configure:
+- **Continue on fail** - Skip the failed node and continue
+- **Retry** - Attempt the node again
+- **Error workflow** - Trigger a separate error-handling workflow
+
+### Common Errors
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| Connection timeout | Slow external service | Increase timeout, add retry |
+| Invalid credentials | Expired or wrong credentials | Update credentials |
+| Rate limited | Too many API calls | Add delays, reduce frequency |
+| Invalid data | Unexpected input format | Add validation, handle edge cases |
+
+## Debugging Workflows
+
+### Check Node Output
+
+1. Click on a node after execution
+2. View the output data in the panel
+3. Verify the data matches expectations
+
+### Use Data Preview
+
+Add a **Data Preview** node to inspect data at any point without affecting the flow.
+
+### Test Incrementally
+
+1. Build your workflow step by step
+2. Execute after adding each node
+3. Verify output before continuing
+
+### Check Expressions
+
+If expressions aren't working:
+1. Verify the source node executed successfully
+2. Check the exact field path
+3. Use the expression editor's autocomplete
+
+## Performance Tips
+
+### Optimize Data Flow
+
+- Filter data early to reduce processing
+- Use Split/Merge for parallel processing
+- Avoid unnecessary data transformations
+
+### Handle Large Datasets
+
+- Process in batches when possible
+- Use pagination for API calls
+- Consider memory limits
+
+### Reduce API Calls
+
+- Cache responses when appropriate
+- Batch requests when APIs support it
+- Use webhooks instead of polling
+
+## Execution Limits
+
+| Limit | Community | Cloud |
+|-------|-----------|-------|
+| Concurrent executions | Unlimited | Plan-based |
+| Execution timeout | 1 hour | Plan-based |
+| Data size per node | 16 MB | 16 MB |

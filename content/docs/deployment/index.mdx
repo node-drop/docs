@@ -1,0 +1,132 @@
+---
+title: Deployment
+description: Deploy NodeDrop to production
+---
+
+# Deployment
+
+Deploy NodeDrop to various platforms and environments.
+
+## Deployment Options
+
+| Platform | Difficulty | Best For |
+|----------|------------|----------|
+| Docker Compose | Easy | Single server |
+| Coolify | Easy | Self-hosted PaaS |
+| Kubernetes | Advanced | Large scale |
+| Cloud VMs | Medium | Custom setups |
+
+## Docker Compose (Recommended)
+
+The simplest production deployment:
+
+```bash
+# Clone or download docker-compose.published.yml
+curl -O https://raw.githubusercontent.com/node-drop/nodedrop/main/docker-compose.published.yml
+
+# Create .env file
+cat > .env << EOF
+JWT_SECRET=$(openssl rand -base64 32)
+POSTGRES_PASSWORD=$(openssl rand -base64 16)
+REDIS_PASSWORD=$(openssl rand -base64 16)
+EOF
+
+# Start services
+docker-compose -f docker-compose.published.yml up -d
+```
+
+## Coolify
+
+Deploy with Coolify (self-hosted Heroku alternative):
+
+1. Add a new service in Coolify
+2. Select Docker Compose
+3. Point to the repository or compose file
+4. Configure environment variables
+5. Deploy
+
+See [Coolify documentation](https://coolify.io/docs) for details.
+
+
+## Cloud VMs
+
+### Requirements
+
+- 2+ CPU cores
+- 4GB+ RAM
+- 20GB+ storage
+- Ubuntu 22.04 or similar
+
+### Setup Steps
+
+```bash
+# Install Docker
+curl -fsSL https://get.docker.com | sh
+
+# Install Docker Compose
+sudo apt install docker-compose-plugin
+
+# Create directory
+mkdir -p /opt/nodedrop
+cd /opt/nodedrop
+
+# Download compose file
+curl -O https://raw.githubusercontent.com/node-drop/nodedrop/main/docker-compose.published.yml
+
+# Configure environment
+cp .env.example .env
+nano .env  # Edit with your values
+
+# Start
+docker compose up -d
+```
+
+## Reverse Proxy Setup
+
+### With Nginx
+
+```nginx
+server {
+    listen 80;
+    server_name nodedrop.example.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name nodedrop.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/nodedrop.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/nodedrop.example.com/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:5678;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+### With Traefik
+
+```yaml
+labels:
+  - "traefik.enable=true"
+  - "traefik.http.routers.nodedrop.rule=Host(`nodedrop.example.com`)"
+  - "traefik.http.routers.nodedrop.tls.certresolver=letsencrypt"
+```
+
+## Production Checklist
+
+- [ ] HTTPS configured
+- [ ] Strong secrets generated
+- [ ] Backups configured
+- [ ] Monitoring set up
+- [ ] Firewall configured
+- [ ] Resource limits set
+- [ ] Log rotation enabled

@@ -1,0 +1,162 @@
+---
+title: Installation
+description: Get NodeDrop up and running
+---
+
+# Installation
+
+NodeDrop can be installed in several ways depending on your needs.
+
+## Quick Start (Recommended)
+
+The fastest way to get started:
+
+```bash
+npm create nodedrop
+# or
+npx @nodedrop/create
+```
+
+This will:
+1. Download the latest NodeDrop release
+2. Set up Docker containers for PostgreSQL and Redis
+3. Start the application on port 5678
+
+Visit **http://localhost:5678/register** to create your admin account.
+
+## Docker Installation
+
+### Using Published Images
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/node-drop/nodedrop:latest
+
+# Create a docker-compose.yml file and run
+docker-compose -f docker-compose.published.yml up
+```
+
+### From Source
+
+```bash
+# Clone the repository
+git clone https://github.com/node-drop/nodedrop.git
+cd nodedrop
+
+# Copy environment file
+cp .env.example .env
+
+# Start with Docker
+docker-compose up --build
+```
+
+## Manual Installation
+
+If you prefer to run without Docker:
+
+### Prerequisites
+
+- Node.js >= 18.0.0
+- npm >= 9.0.0 or Bun >= 1.0.0
+- PostgreSQL 14+
+- Redis 6+
+
+### Steps
+
+```bash
+# Clone the repository
+git clone https://github.com/node-drop/nodedrop.git
+cd nodedrop
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your database and Redis connection strings
+
+# Run database migrations
+npm run db:migrate
+
+# Start development servers
+npm run dev:backend    # Terminal 1
+npm run dev:frontend   # Terminal 2
+```
+
+- Frontend: http://localhost:3000
+- Backend: http://localhost:4000
+
+## Environment Variables
+
+Create a `.env` file with these settings:
+
+```bash
+# Database
+POSTGRES_USER=nodedrop
+POSTGRES_PASSWORD=your_secure_password
+POSTGRES_DB=nodedrop
+DATABASE_URL=postgresql://nodedrop:your_secure_password@localhost:5432/nodedrop
+
+# Redis
+REDIS_PASSWORD=your_redis_password
+REDIS_URL=redis://:your_redis_password@localhost:6379
+
+# Security
+JWT_SECRET=your_jwt_secret_key
+
+# Environment
+NODE_ENV=production
+PORT=5678
+```
+
+## Verifying Installation
+
+After installation, you should be able to:
+
+1. Access the web interface at your configured URL
+2. Register a new admin account
+3. Create and run a simple workflow
+
+## Updating NodeDrop
+
+To update to the latest version:
+
+```bash
+cd nodedrop
+docker-compose pull
+docker-compose up -d
+```
+
+Your workflows, credentials, and data are preserved in Docker volumes.
+
+## Troubleshooting
+
+### Port Conflicts
+
+If ports 5678, 5432, or 6379 are in use:
+1. Stop conflicting services
+2. Or modify ports in `docker-compose.yml`
+
+### Database Issues
+
+```bash
+# Reset database
+npm run db:reset
+
+# View database logs
+docker-compose logs postgres
+```
+
+### Docker Issues
+
+```bash
+# Check Docker status
+docker info
+
+# View logs
+docker-compose logs -f
+
+# Clean restart
+docker-compose down -v
+docker-compose up --build
+```

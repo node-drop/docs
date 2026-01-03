@@ -1,0 +1,107 @@
+---
+title: Logic & Flow Control
+description: Nodes that control workflow execution flow
+---
+
+# Logic & Flow Control Nodes
+
+These nodes control how data flows through your workflow.
+
+## If/Else
+
+Routes data based on a condition. Has two outputs: true and false.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Condition | expression | Condition to evaluate |
+
+**Example:**
+```
+{{ $json.status === "active" }}
+{{ $json.amount > 100 }}
+{{ $json.email.includes("@company.com") }}
+```
+
+## Switch
+
+Routes data to multiple outputs based on rules.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Mode | select | Rules or Expression |
+| Rules | array | Conditions for each output |
+| Fallback | select | Output for non-matching items |
+
+
+## Loop
+
+Iterates over items one at a time, useful for rate-limited APIs.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Batch Size | number | Items per iteration |
+| Pause Between | number | Delay in ms between batches |
+
+## Split
+
+Splits an array field into individual items.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Field to Split | string | Array field name |
+| Include Other Fields | boolean | Keep other fields |
+
+**Example:**
+Input: `{ "items": [1, 2, 3] }`
+Output: Three items: `{ "item": 1 }`, `{ "item": 2 }`, `{ "item": 3 }`
+
+## Merge
+
+Combines data from multiple inputs.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Mode | select | Append, Merge by Key, etc. |
+| Join Field | string | Field to match on (for merge) |
+
+**Modes:**
+- **Append** - Combine all items into one array
+- **Merge by Key** - Match items by a field
+- **Wait** - Wait for all inputs before continuing
+
+## Wait
+
+Pauses workflow execution.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Wait Type | select | Duration or Until Time |
+| Duration | number | Seconds to wait |
+| Until | datetime | Specific time to resume |
+
+## Aggregate
+
+Combines multiple items into a single item.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Aggregate | select | All Items, Field Values |
+| Output Field | string | Name for aggregated data |
+
+**Example:**
+Input: `[{ "n": 1 }, { "n": 2 }]`
+Output: `{ "items": [{ "n": 1 }, { "n": 2 }] }`

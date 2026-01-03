@@ -1,0 +1,67 @@
+---
+title: NodeDrop Documentation
+description: Open-source workflow automation platform
+---
+
+import { Cards, Card } from 'fumadocs-ui/components/card';
+
+# Welcome to NodeDrop
+
+NodeDrop is a powerful, open-source workflow automation platform that lets you connect apps and automate tasks with a visual drag-and-drop interface. Think of it as a self-hosted alternative to Zapier or n8n.
+
+## Why NodeDrop?
+
+- **Visual Workflow Builder** - Create automations with an intuitive drag-and-drop interface
+- **Self-Hosted** - Run on your own infrastructure with full control over your data
+- **Extensible** - Build custom nodes for any integration you need
+- **Open Source** - MIT licensed, free forever for the community edition
+
+## Quick Start
+
+Get NodeDrop running in under 5 minutes:
+
+```bash
+npm create nodedrop
+```
+
+Then visit **http://localhost:5678/register** to create your admin account.
+
+## Documentation
+
+<Cards>
+  <Card title="Installation" href="/docs/getting-started/installation" />
+  <Card title="Your First Workflow" href="/docs/getting-started/first-workflow" />
+  <Card title="Nodes Reference" href="/docs/nodes" />
+  <Card title="Configuration" href="/docs/configuration" />
+</Cards>
+
+## Features
+
+### Workflow Automation
+Build complex automations by connecting nodes together. Each node performs a specific action - from making HTTP requests to transforming data to integrating with AI services.
+
+### Multiple Trigger Types
+Start workflows in different ways:
+- **Manual** - Run on demand
+- **Schedule** - Cron-based scheduling
+- **Webhook** - HTTP endpoints that trigger workflows
+- **Events** - React to changes in connected services
+
+### Built-in Nodes
+NodeDrop comes with 25+ built-in nodes covering:
+- HTTP requests and webhooks
+- Data transformation (Set, JSON, Code)
+- Logic and flow control (If/Else, Switch, Loop)
+- AI integrations (OpenAI, Anthropic)
+- And more...
+
+### Secure Credential Management
+Store API keys and OAuth tokens securely with encrypted credential storage.
+
+## Editions
+
+### Community Edition (This Documentation)
+Free, self-hosted, unlimited workflows and executions. Perfect for individuals and small teams.
+
+### Cloud Edition
+Managed SaaS at [nodedrop.io](https://nodedrop.io) with multi-workspace, team collaboration, and enterprise features.

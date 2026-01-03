@@ -1,0 +1,146 @@
+---
+title: Updating NodeDrop
+description: Keep NodeDrop up to date
+---
+
+# Updating NodeDrop
+
+Keep your NodeDrop installation current with the latest features and security patches.
+
+## Docker Update
+
+The simplest update method:
+
+```bash
+cd /path/to/nodedrop
+
+# Pull latest images
+docker-compose pull
+
+# Restart with new images
+docker-compose up -d
+```
+
+## What Gets Updated
+
+| Updated | Preserved |
+|---------|-----------|
+| Application code | Your workflows |
+| Bug fixes | Your credentials |
+| New features | Your database |
+| Security patches | Your settings |
+
+## Version Pinning
+
+For controlled updates, pin to specific versions:
+
+```yaml
+# docker-compose.yml
+services:
+  nodedrop:
+    image: ghcr.io/node-drop/nodedrop:1.0.5
+```
+
+Update by changing the version number and restarting.
+
+## Checking Current Version
+
+1. Log in to NodeDrop
+2. Go to **Settings > About**
+3. View current version
+
+Or via API:
+```bash
+curl https://your-instance/api/system/version
+```
+
+
+## Database Migrations
+
+NodeDrop handles database migrations automatically:
+
+1. On startup, checks for pending migrations
+2. Applies migrations in order
+3. Logs migration status
+
+No manual intervention needed for most updates.
+
+## Backup Before Updating
+
+Always backup before major updates:
+
+```bash
+# Backup database
+docker-compose exec postgres pg_dump -U nodedrop nodedrop > backup.sql
+
+# Backup volumes (optional)
+docker run --rm -v nodedrop_postgres_data:/data -v $(pwd):/backup alpine tar czf /backup/postgres_backup.tar.gz /data
+```
+
+## Rollback
+
+If an update causes issues:
+
+```bash
+# Stop current version
+docker-compose down
+
+# Use previous version
+# Edit docker-compose.yml to use previous tag
+# e.g., ghcr.io/node-drop/nodedrop:1.0.4
+
+# Restore database if needed
+docker-compose exec -T postgres psql -U nodedrop nodedrop < backup.sql
+
+# Start
+docker-compose up -d
+```
+
+## Release Notes
+
+Check release notes before updating:
+- [GitHub Releases](https://github.com/node-drop/nodedrop/releases)
+- Breaking changes
+- New features
+- Bug fixes
+
+## Update Schedule
+
+Recommended update frequency:
+
+| Type | Frequency |
+|------|-----------|
+| Security patches | Immediately |
+| Bug fixes | Weekly |
+| Minor versions | Monthly |
+| Major versions | After testing |
+
+## Troubleshooting Updates
+
+### Migration Failed
+
+```bash
+# Check logs
+docker-compose logs nodedrop
+
+# Manual migration (if needed)
+docker-compose exec nodedrop npm run db:migrate
+```
+
+### Container Won't Start
+
+```bash
+# Check for errors
+docker-compose logs nodedrop
+
+# Try clean restart
+docker-compose down
+docker-compose up -d
+```
+
+### Rollback to Previous Version
+
+1. Stop containers
+2. Change image tag to previous version
+3. Restore database backup
+4. Start containers

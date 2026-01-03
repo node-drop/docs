@@ -1,0 +1,63 @@
+---
+title: Utility Nodes
+description: Helper nodes for debugging and organization
+---
+
+# Utility Nodes
+
+These nodes help with debugging, testing, and organizing workflows.
+
+## Data Preview
+
+Displays data at any point in the workflow without affecting execution.
+
+**Properties:** None
+
+**Use Cases:**
+- Debugging data flow
+- Inspecting transformations
+- Verifying API responses
+
+**Tips:**
+- Add between nodes to see intermediate data
+- Remove before production deployment
+- Use to understand data structure
+
+## Image Preview
+
+Displays images in the workflow editor.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Image Field | string | Field containing image data |
+| Image Type | select | URL, Base64, Binary |
+
+**Use Cases:**
+- Preview generated images
+- Debug image processing
+- Verify image URLs
+
+## Workflow Called
+
+Internal node that handles sub-workflow execution.
+
+This node is automatically added when a workflow is called from another workflow using the Execute Workflow node.
+
+**Output:** Data returned from the sub-workflow.
+
+## Annotations (Sticky Notes)
+
+Add comments and documentation directly on the canvas.
+
+**Features:**
+- Resizable
+- Multiple colors
+- Markdown support
+- Doesn't affect execution
+
+**Use Cases:**
+- Document workflow sections
+- Add instructions for team members
+- Mark areas needing attention

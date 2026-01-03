@@ -1,0 +1,116 @@
+---
+title: Data Transformation
+description: Nodes that transform and manipulate data
+---
+
+# Data Transformation Nodes
+
+These nodes modify and transform data as it flows through your workflow.
+
+## Set
+
+Adds or updates fields on data items.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Mode | select | Manual or JSON |
+| Fields | array | Fields to set |
+| Keep Only Set | boolean | Remove other fields |
+
+**Example - Adding fields:**
+```
+Field: fullName
+Value: {{ $json.firstName + " " + $json.lastName }}
+```
+
+**Example - Restructuring:**
+```json
+{
+  "user": {
+    "name": "{{ $json.name }}",
+    "email": "{{ $json.email }}"
+  }
+}
+```
+
+
+## JSON
+
+Composes JSON objects from expressions.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| JSON | json | JSON template with expressions |
+
+**Example:**
+```json
+{
+  "timestamp": "{{ $now }}",
+  "data": {
+    "id": "{{ $json.id }}",
+    "processed": true
+  }
+}
+```
+
+## Code
+
+Executes custom JavaScript or Python code.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Language | select | JavaScript or Python |
+| Code | code | Your custom code |
+
+**JavaScript Example:**
+```javascript
+// Access input items
+const items = $input.all();
+
+// Transform and return
+return items.map(item => ({
+  json: {
+    ...item.json,
+    processed: true,
+    timestamp: new Date().toISOString()
+  }
+}));
+```
+
+**Available in Code:**
+- `$input` - Input items
+- `$json` - Current item's data
+- `$node` - Access other nodes
+- Standard JS/Python libraries
+
+## Formatter
+
+Formats text, dates, and numbers.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Operation | select | Text, Date, or Number |
+| Action | select | Specific transformation |
+
+**Text Operations:**
+- Uppercase, Lowercase, Capitalize
+- Trim, Replace, Split
+- Extract (regex)
+
+**Date Operations:**
+- Format, Parse
+- Add/Subtract time
+- Get parts (year, month, day)
+
+**Number Operations:**
+- Round, Floor, Ceil
+- Format currency
+- Convert units

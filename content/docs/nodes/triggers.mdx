@@ -1,0 +1,117 @@
+---
+title: Trigger Nodes
+description: Nodes that start workflow execution
+---
+
+# Trigger Nodes
+
+Trigger nodes determine when and how your workflow starts.
+
+## Manual Trigger
+
+Starts the workflow when you click Execute.
+
+**Properties:** None
+
+**Output:**
+```json
+{
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+
+## Schedule Trigger
+
+Runs workflows on a schedule using cron expressions.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Cron Expression | string | When to run (cron format) |
+| Timezone | string | Timezone for the schedule |
+
+**Output:**
+```json
+{
+  "timestamp": "2024-01-15T09:00:00Z",
+  "scheduledTime": "2024-01-15T09:00:00Z"
+}
+```
+
+**Cron Examples:**
+- `0 9 * * *` - Daily at 9 AM
+- `0 */2 * * *` - Every 2 hours
+- `0 9 * * 1-5` - Weekdays at 9 AM
+
+
+## Webhook Trigger
+
+Creates an HTTP endpoint that triggers the workflow.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| HTTP Method | select | GET, POST, PUT, DELETE |
+| Path | string | Custom URL path |
+| Authentication | select | None, Basic, Header |
+| Response Mode | select | Immediate or Last Node |
+
+**Output:**
+```json
+{
+  "body": { },
+  "headers": { },
+  "query": { },
+  "params": { }
+}
+```
+
+## Workflow Trigger
+
+Allows the workflow to be called from another workflow.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Input Schema | json | Expected input structure |
+
+**Output:** Data passed from the calling workflow.
+
+## Error Trigger
+
+Runs when a monitored workflow fails.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Workflow | select | Workflow to monitor |
+
+**Output:**
+```json
+{
+  "error": {
+    "message": "Error description",
+    "workflow": "Workflow Name",
+    "node": "Failed Node",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+## Google Sheets Trigger
+
+Triggers when a Google Sheet is modified.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Spreadsheet | select | Sheet to monitor |
+| Sheet | select | Specific tab |
+| Trigger On | select | Added, Updated, Deleted |
+
+**Requires:** Google OAuth credentials

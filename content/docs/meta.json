@@ -1,0 +1,12 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "getting-started",
+    "workflows",
+    "nodes",
+    "credentials",
+    "configuration",
+    "deployment"
+  ]
+}
