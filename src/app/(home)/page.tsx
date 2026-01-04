@@ -58,13 +58,13 @@ export default function HomePage() {
               Open Source Workflow Automation
             </span>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            Build Powerful Automations,{' '}
-            <span className="text-fd-primary">Your Way</span>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">
+            Build Powerful Automations
+           
           </h1>
-          <p className="mt-6 text-lg leading-8 text-fd-muted-foreground">
-            NodeDrop is a self-hosted workflow automation platform. Create, deploy, and monitor 
-            automations with a beautiful visual interface. No vendor lock-in, full control.
+          <p className="mt-6 text-md leading-8 text-fd-muted-foreground">
+           Create, deploy, and monitor 
+            automations with a beautiful visual interface.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
@@ -87,7 +87,7 @@ export default function HomePage() {
 
           {/* Quick Start */}
           <div className="mt-16">
-            <div className="rounded-2xl border p-8 shadow-lg text-left">
+            <div className="rounded-2xl border border-fd-border bg-white dark:bg-fd-card p-8 shadow-lg text-left">
               <div className="mb-4 flex items-center gap-2 text-fd-muted-foreground">
                 <Terminal className="size-5" />
                 <span className="text-sm font-medium">Quick Start</span>
@@ -118,9 +118,9 @@ export default function HomePage() {
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="group flex flex-col gap-4 rounded-lg border border-fd-border bg-transparent p-6 transition-colors hover:border-fd-primary/50 hover:bg-fd-accent/5"
+                className="group flex flex-col gap-4 rounded-lg border border-fd-border bg-white dark:bg-fd-card p-6 transition-colors hover:border-fd-primary/50 hover:bg-fd-accent/50"
               >
-                <div className="inline-flex size-12 items-center justify-center rounded-md border border-fd-border bg-fd-background">
+                <div className="inline-flex size-12 items-center justify-center rounded-md border border-fd-border bg-fd-secondary">
                   <feature.icon className="size-5 text-fd-primary" />
                 </div>
                 <div>
